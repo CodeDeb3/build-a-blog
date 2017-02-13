@@ -43,7 +43,7 @@ class Blog(db.Model):
 class MainPage(Handler):
 
     def render_front(self, title="", blog="", error=""):
-        blogz = db.GqlQuery("SELECT * from Blog ORDER BY created DESC")
+        blogz = db.GqlQuery("SELECT * from Blog ORDER BY created DESC LIMIT 5")
 
         self.render("base.html", title=title, blog=blog, error=error, blogz=blogz)
     #def render_front(self,title="", blog="", error="")
@@ -64,4 +64,6 @@ class MainPage(Handler):
 
 app = webapp2.WSGIApplication([
     ('/', MainPage)
+    # ('/blog', BlogPage),
+
 ], debug=True)
