@@ -26,18 +26,41 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir))
 
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
-        self.response.out.write(*a,**kw)
+        self.response.out.write(*a, **kw)
 
-    def render_str(self, template, **params):
-        t = jinja_env.get.template(template)
+    def render_str(self,template, **params):
+        t = jinja_env.get_template(template)
         return t.render(params)
 
     def render(self, template, **kw):
         self.write(self.render_str(template, **kw))
 
-class MainPage(webapp2.RequestHandler):
+class Blog(db.Model):
+    title = db.StringProperty(required = True)
+    blog = db.TextProperty(required = True) # > 500 chars
+    created = db.DateTimeProperty(auto_now_add = True)
+
+class MainPage(Handler):
+
+    def render_front(self, title="", blog="", error=""):
+        blogz = db.GqlQuery("SELECT * from Blog ORDER BY created DESC")
+
+        self.render("base.html", title=title, blog=blog, error=error, blogz=blogz)
+    #def render_front(self,title="", blog="", error="")
     def get(self):
-        self.response.write('Hello world!')
+        self.render_front()
+
+    def post(self):
+        title = self.request.get("title")
+        blog = self.request.get("blog")
+
+        if title and blog:
+            b = Blog(title=title, blog=blog)
+            b.put()
+            self.redirect("/")
+        else:
+            error= "we need a title and a blog"
+            self.render_front(title, blog, error)
 
 app = webapp2.WSGIApplication([
     ('/', MainPage)

@@ -32,11 +32,11 @@
     hr {
         margin: 20px auto;
     }
-    .art + .art {
+    .blog + .blog {
         font-weight: bold;
         font-size: 20px;
     }
-    .art-title {
+    .blog-title {
         margin: 0;
         font-size: 17px:
     }
@@ -44,7 +44,7 @@
     <body>
         <h1>Blog!</h1>
         <form method = "post">
-            
+
             <label>
                 <div>title</div>
                 <input type="text" name= "title" value = "{{title}}">
@@ -52,12 +52,19 @@
 
             <label>
                 <div>blog</div>
-                <textarea name="content">{{blog}}</textarea>
+                <textarea name="blog">{{blog}}</textarea>
             </label>
 
         <div class = "error">{{error}}</div>
 
         <input type="Submit">
+
+        {% for blog in blogz %}
+            <div class="blog">
+                <div class="blog-title">{{blog.title}}</div>
+                <pre class="blog-body">{{blog.blog}}</pre>
+            </div>
+        {% endfor %}
 
     </body>
 </html>
