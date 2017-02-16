@@ -40,6 +40,8 @@ class Blog(db.Model):
     blog = db.TextProperty(required = True) # > 500 chars
     created = db.DateTimeProperty(auto_now_add = True)
 
+# class User(db.Model):
+
 class MainPage(Handler):
 
     def render_front(self, title="", blog="", error=""):
@@ -62,8 +64,29 @@ class MainPage(Handler):
             error= "we need a title and a blog"
             self.render_front(title, blog, error)
 
+class BlogList(Handler):
+    def get(self):
+
+        blogz = db.GqlQuery("SELECT * from Blog ORDER BY created DESC LIMIT 5")
+
+        t=jinja_env.get_template("blogs.html")
+        content = t.render(blog= blogz)
+        self.response.write(content)
+
+# def post(self):
+#     title = self.request.get("title")
+#     blog = self.request.get("blog")
+#
+#     if title and blog:
+#         b = Blog(title=title, blog=blog)
+#         b.put()
+#         self.redirect("/blog")
+#     else:
+#         error= "we need a title and a blog"
+#         self.render_front(title, blog, error)
+
 app = webapp2.WSGIApplication([
-    ('/', MainPage)
-    # ('/blog', BlogPage),
+    ('/', MainPage),
+    ('/blog', BlogList),
 
 ], debug=True)
