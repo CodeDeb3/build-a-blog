@@ -22,12 +22,12 @@
     }
     textarea {
         width: 400px;
-        height: 200px;
+        height: 100px;
         font-size: 17px;
         font-family: monospace;
     }
     input[type=submit] {
-        font-size: 24px;
+        font-size: 20px;
     }
     hr {
         margin: 20px auto;
@@ -43,29 +43,18 @@
     }
 </style>
     <body>
-        <h1>Blog!</h1>
-        <form method = "post">
+        <h1>
+            <a href ='/blog'>blogs!</a>
+        </h1>
 
-            <label>
-                <div>title</div>
-                <input type="text" name= "title" value = "{{title}}">
-            </label>
+        <h2>
+            <a href ='/newpost'>Make a post</a>
+        </h2>
+        <h4>
+            <a href ='/blog'> Return to Main page </a>
+        </h4> 
 
-            <label>
-                <div>blog</div>
-                <textarea name="blog">{{blog}}</textarea>
-            </label>
-
-        <div class = "error">{{error}}</div>
-
-        <input type="Submit">
-
-        {% for blog in blogz %}
-            <div class="blog">
-                <div class="blog-title">{{blog.title}}</div>
-                <pre class="blog-body">{{blog.blog}}</pre>
-            </div>
-        {% endfor %}
-
+        {% block content %}
+        {% endblock %}
     </body>
 </html>

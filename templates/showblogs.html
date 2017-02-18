@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- <body>
+    <form action = "/newpost" method = "post"> -->
+<ul>
+
+{% for blog in blogz %}
+    <li>
+        <h3>{{blog.title}}</h3>
+        <pre class="blog-body">{{blog.blog}}</pre>
+
+        <!-- <form action = "/newpost" method = "post"/> -->
+
+        </form>
+    </li>
+
+    <!-- <div class="blog">
+        <div class="blog-title">{{blog.title}}</div>
+        <pre class="blog-body">{{blog.blog}}</pre>
+    </div> -->
+{% endfor %}
+</ul>
+<!-- </body> -->
+
+{% endblock %}

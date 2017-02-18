@@ -3,8 +3,10 @@
 {% block content %}
 
 <body>
-    <h2>New Blogs</h2>
-    <form action = "/blog" method = "post">
+    <!-- <h2>New Blogs</h2> -->
+    <!-- <form method = "post"> -->
+
+    <form action = "/newpost" method = "post">
 
         <label>
             <div>title</div>
@@ -13,17 +15,20 @@
 
         <label>
             <div>blog</div>
-            <textarea name="blog">{{blog}}</textarea>
+            <textarea name="blog"></textarea>
         </label>
 
     <div class = "error">{{error}}</div>
+    <input type="Submit">
 
+</body>
 
-{% for blog in blogz %}
-    <div class="blog">
-        <div class="blog-title">{{blog.title}}</div>
+<!--
+    <div class="blog-title">{{blog.title}}</div>
+        <div class="blog">
+        {% for blog in blogz %}
         <pre class="blog-body">{{blog.blog}}</pre>
     </div>
-{% endfor %}
+{% endfor %} -->
 
 {% endblock %}

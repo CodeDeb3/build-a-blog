@@ -24,6 +24,12 @@ from google.appengine.ext import db
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir))
 
+allowed_routes = [
+    "/blog",
+    "/newpost",
+    "/"
+]
+
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
         self.response.out.write(*a, **kw)
@@ -47,10 +53,18 @@ class MainPage(Handler):
     def render_front(self, title="", blog="", error=""):
         blogz = db.GqlQuery("SELECT * from Blog ORDER BY created DESC LIMIT 5")
 
-        self.render("base.html", title=title, blog=blog, error=error, blogz=blogz)
-    #def render_front(self,title="", blog="", error="")
+        self.render("blogs.html", title=title, blog=blog, error=error, blogz=blogz)
+    # #def render_front(self,title="", blog="", error="")
+
+
+
     def get(self):
+        # t=jinja_env.get_template("blogs.html")
+        # content = t.render(blog= blog)
+        # self.response.write(content)
+
         self.render_front()
+
 
     def post(self):
         title = self.request.get("title")
@@ -59,18 +73,28 @@ class MainPage(Handler):
         if title and blog:
             b = Blog(title=title, blog=blog)
             b.put()
-            self.redirect("/")
+            self.redirect("/newpost")
         else:
             error= "we need a title and a blog"
             self.render_front(title, blog, error)
 
+class ViewPostHandler(Handler):
+    def get(self,id):
+        self.response.write()
+
+
 class BlogList(Handler):
+
+# def render_front(self, title="", blog="", error=""):
+#     blogz = db.GqlQuery("SELECT * from Blog ORDER BY created DESC LIMIT 5")
+#     self.render("base.html", title=title, blog=blog, error=error, blogz=blogz)
+
     def get(self):
 
-        blogz = db.GqlQuery("SELECT * from Blog ORDER BY created DESC LIMIT 5")
+        blogz = db.GqlQuery("SELECT * from Blog ORDER BY created DESC")
 
-        t=jinja_env.get_template("blogs.html")
-        content = t.render(blog= blogz)
+        t=jinja_env.get_template("showblogs.html")
+        content = t.render(blogz= blogz)
         self.response.write(content)
 
 # def post(self):
@@ -86,7 +110,10 @@ class BlogList(Handler):
 #         self.render_front(title, blog, error)
 
 app = webapp2.WSGIApplication([
-    ('/', MainPage),
+    ('/',MainPage),
+    ('/newpost', MainPage),
     ('/blog', BlogList),
+    # ('/newpost', NewPostHandler),
 
+    webapp2.Route('/blog/<id:\d+>',ViewPostHandler),
 ], debug=True)
