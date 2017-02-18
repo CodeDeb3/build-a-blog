@@ -1,20 +1,20 @@
+<!-- This is the blog listings -->
+
 {% extends "base.html" %}
 
 {% block content %}
-
 <!-- <body>
     <form action = "/newpost" method = "post"> -->
 <ul>
+    <li><a href ='/newpost'>Add a new post</a></li>
 
 {% for blog in blogz %}
     <li>
         <h3>{{blog.title}}</h3>
         <pre class="blog-body">{{blog.blog}}</pre>
-
-        <!-- <form action = "/newpost" method = "post"/> -->
-
-        </form>
     </li>
+
+        <!-- </form> -->
 
     <!-- <div class="blog">
         <div class="blog-title">{{blog.title}}</div>
