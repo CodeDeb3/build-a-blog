@@ -5,23 +5,19 @@
 {% block content %}
 <!-- <body>
     <form action = "/newpost" method = "post"> -->
-<ul>
-    <li><a href ='/newpost'>Add a new post</a></li>
 
 {% for blog in blogz %}
+<ul>
     <li>
-        <h3>{{blog.title}}</h3>
+        <a href="/blog/{{blog.key().id()}}">
+             {{blog.title}}</a>
+
+        <!-- <h3>{{blog.title}}</h3> -->
         <pre class="blog-body">{{blog.blog}}</pre>
     </li>
-
-        <!-- </form> -->
-
-    <!-- <div class="blog">
-        <div class="blog-title">{{blog.title}}</div>
-        <pre class="blog-body">{{blog.blog}}</pre>
-    </div> -->
-{% endfor %}
 </ul>
+{% endfor %}
+
 <!-- </body> -->
 
 {% endblock %}

@@ -22,7 +22,7 @@ from google.appengine.ext import db
 
 # set up jinja
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
-jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir))
+jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
 
 allowed_routes = [
     "/blog",
@@ -53,7 +53,7 @@ class MainPage(Handler):
     def render_front(self, title="", blog="", error=""):
         blogz = db.GqlQuery("SELECT * from Blog ORDER BY created DESC LIMIT 5")
 
-        self.render("blogs.html", title=title, blog=blog, error=error, blogz=blogz)
+        self.render("index.html", title=title, blog=blog, error=error, blogz=blogz)
     # #def render_front(self,title="", blog="", error="")
 
 
@@ -66,21 +66,44 @@ class MainPage(Handler):
         self.render_front()
 
 
+class NewPostHandler(Handler):
+
+    def get(self):
+        self.render("newpost.html")
+
     def post(self):
+        """ Create new blog post"""
+
+        error=""
         title = self.request.get("title")
         blog = self.request.get("blog")
 
         if title and blog:
             b = Blog(title=title, blog=blog)
             b.put()
-            self.redirect("/newpost")
+
+            blog_id = b.key().id()
+
+            self.redirect("/blog/%s" % blog_id)
+
         else:
-            error= "we need a title and a blog"
-            self.render_front(title, blog, error)
+            error= "we need a title and a body"
+            self.render("newpost.html", blog=blog, title=title, error= error)
 
 class ViewPostHandler(Handler):
+    """ Render page determined by id"""
+
     def get(self,id):
-        self.response.write()
+        blog = Blog.get_by_id(int(id))
+
+        if blog:
+            # t=jinja_env.get_template("blogs.html")
+            # content = t.render(blog=blog)
+            self.render("blogs.html", blog=blog)
+        else:
+            self.renderError(400)
+
+
 
 
 class BlogList(Handler):
@@ -111,9 +134,7 @@ class BlogList(Handler):
 
 app = webapp2.WSGIApplication([
     ('/',MainPage),
-    ('/newpost', MainPage),
+    ('/newpost', NewPostHandler),
     ('/blog', BlogList),
-    # ('/newpost', NewPostHandler),
-
     webapp2.Route('/blog/<id:\d+>',ViewPostHandler),
 ], debug=True)

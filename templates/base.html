@@ -44,28 +44,16 @@
 </style>
     <body>
         <!-- <h1> Blogz -->
-            <h1><a href ='/newpost'>Build-a-Blog</a></h1>
-        <!-- <h3>
+            <h1><a href ='/'>Build-a-Blog</a></h1>
+        <h3>
             <ul>
                 <li><a href ='/newpost'>Add a new post</a></li>
                 <li><a href ='/blog'>View blogs</a></li>
             </ul>
-        </h3> -->
+        </h3>
 
         {% block content %}
         {% endblock %}
-    </body>
-
-    <body>
-        {% for blog in blogz %}
-        <ul>
-            <li>
-                <h3>{{blog.title}}</h3>
-                <pre class="blog-body">{{blog.blog}}</pre>
-            </li>
-        </ul>
-        {% endfor %}
 
 
-    </body>
 </html>

@@ -1,0 +1,28 @@
+<!-- shows add new post screen -->
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<body>
+
+    <form action = "/newpost" method = "post">
+
+        <label>
+            <div>title</div>
+            <input type="text" name= "title" value = "{{title}}">
+        </label>
+
+        <label>
+            <div>blog</div>
+            <textarea name="blog"></textarea>
+        </label>
+
+
+    <div class = "error">{{error}}</div>
+    <input type="Submit">
+
+</body>
+
+
+{% endblock %}
